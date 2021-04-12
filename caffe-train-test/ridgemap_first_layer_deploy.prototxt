@@ -1,0 +1,42 @@
+input: "data_img"
+input_dim: 1
+input_dim: 1
+input_dim: 192
+input_dim: 192
+
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data_img"
+  top: "conv1"
+    param{ 
+    name:"conv1_w"
+  lr_mult:1
+  }
+  param{
+    name:"conv1_b"
+  lr_mult:2
+  }
+  convolution_param {
+    num_output: 64
+    kernel_size: 11
+    stride: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}

@@ -1,0 +1,42 @@
+input: "data_map"
+input_dim: 1
+input_dim: 1
+input_dim: 192
+input_dim: 192
+
+layer {
+  name: "conv11"
+  type: "Convolution"
+  bottom: "data_map"
+  top: "conv11"
+   param{
+    name:"conv1_w"
+  lr_mult:1
+  }
+  param{
+      name:"conv1_b"
+  lr_mult:2
+  }
+  convolution_param {
+    num_output: 64
+    kernel_size: 11
+    stride: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool11"
+  type: "Pooling"
+  bottom: "conv11"
+  top: "pool11"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}

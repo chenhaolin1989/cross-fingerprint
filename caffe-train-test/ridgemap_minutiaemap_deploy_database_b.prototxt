@@ -1,0 +1,145 @@
+name: "finger_siamese_data_b"
+input: "combine1"
+input_dim: 1
+input_dim: 128
+input_dim: 30
+input_dim: 30
+
+
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "combine1"
+  top: "conv2"
+param{
+    name:"conv2_w"
+  lr_mult:1
+  }
+  param{
+      name:"conv2_b"
+  lr_mult:2
+  }
+  convolution_param {
+    num_output: 256
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+param{
+    name:"conv3_w"
+  lr_mult:1
+  }
+  param{
+      name:"conv3_b"
+  lr_mult:2
+  }
+  convolution_param {
+    num_output: 512
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv44"
+  type: "Convolution"
+  bottom: "pool3"
+  top: "conv44"
+param{
+    name:"conv44_w"
+  lr_mult:1
+  }
+  param{
+      name:"conv44_b"
+  lr_mult:2
+  }
+  convolution_param {
+    num_output: 1024
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool44"
+  type: "Pooling"
+  bottom: "conv44"
+  top: "pool44"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "ip11"
+  type: "InnerProduct"
+  bottom: "pool44"
+  top: "ip11"
+  param{
+   name: "ip11_w"
+  lr_mult:1
+  }
+  param{
+    name: "ip11_b"
+  lr_mult:2
+  }
+  inner_product_param {
+    num_output: 1024
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu11"
+  type: "PReLU"
+  bottom: "ip11"
+  top: "ip11"
+}
